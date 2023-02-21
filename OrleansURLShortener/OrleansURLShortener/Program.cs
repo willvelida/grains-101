@@ -12,6 +12,10 @@ builder.Host.UseOrleans(siloBuilder =>
     // This uses AddMemoryGrainStorage to persist grains in memory
     // Can use storage services like Azure Blob storage instead
     siloBuilder.AddMemoryGrainStorage("urls");
+    siloBuilder.AddAzureTableGrainStorage("urls", configureOptions: options =>
+    {
+        options.ConfigureTableServiceClient(builder.Configuration.GetValue<string>("TableConnectionString"));
+    });
 });
 
 var app = builder.Build();
